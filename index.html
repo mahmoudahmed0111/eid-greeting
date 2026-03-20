@@ -87,6 +87,8 @@
     ============================================================ */
     .frame {
       position: fixed;
+      inset: 12px;
+      border: 1px solid rgba(212,175,55,.25);
       border-radius: 4px;
       pointer-events: none;
       z-index: 1;
@@ -434,6 +436,297 @@
       .lanterns-row { gap: 1.2rem; }
       .lantern svg { width: 44px; }
     }
+
+    /* ============================================================
+       EIDIYA SECTION
+    ============================================================ */
+
+    /* Section scroll reveal — hidden by default */
+    .eidiya-section {
+      width: 100%;
+      max-width: 680px;
+      margin: 2rem auto 0;
+      opacity: 0;
+      transform: translateY(50px) scale(.97);
+      transition: opacity .8s cubic-bezier(.22,1,.36,1),
+                  transform .8s cubic-bezier(.22,1,.36,1);
+    }
+    .eidiya-section.revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Outer card with gradient border trick */
+    .eidiya-card {
+      position: relative;
+      background: linear-gradient(145deg, #1a0d3d, #0e1535, #1a2050);
+      border-radius: 24px;
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      overflow: hidden;
+      /* double-ring border */
+      box-shadow:
+        0 0 0 1px rgba(212,175,55,.5),
+        0 0 0 3px rgba(212,175,55,.1),
+        0 20px 60px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(212,175,55,.2);
+    }
+
+    /* Animated gradient shimmer on border */
+    .eidiya-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: conic-gradient(
+        from var(--border-angle, 0deg),
+        transparent 30%,
+        rgba(212,175,55,.6) 40%,
+        rgba(245,217,122,.9) 50%,
+        rgba(212,175,55,.6) 60%,
+        transparent 70%
+      );
+      border-radius: 26px;
+      z-index: 0;
+      animation: rotateBorder 4s linear infinite;
+    }
+    .eidiya-card::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: linear-gradient(145deg, #1a0d3d, #0e1535, #1a2050);
+      border-radius: 22px;
+      z-index: 1;
+    }
+    @keyframes rotateBorder {
+      to { --border-angle: 360deg; }
+    }
+    @property --border-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    /* All direct children sit above the ::after overlay */
+    .eidiya-card > * { position: relative; z-index: 2; }
+
+    /* Header badge */
+    .eidiya-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: linear-gradient(135deg, rgba(212,175,55,.2), rgba(212,175,55,.08));
+      border: 1px solid rgba(212,175,55,.4);
+      border-radius: 50px;
+      padding: .4rem 1.2rem;
+      font-size: .78rem;
+      letter-spacing: .12em;
+      color: var(--gold);
+      font-family: 'Cinzel Decorative', serif;
+      margin-bottom: 1.4rem;
+      animation: pulseBadge 2.5s ease-in-out infinite;
+    }
+    @keyframes pulseBadge {
+      0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); }
+      50%      { box-shadow: 0 0 0 6px rgba(212,175,55,.12); }
+    }
+
+    /* Emoji stack */
+    .eidiya-emojis {
+      font-size: 2.2rem;
+      margin-bottom: .8rem;
+      display: block;
+      animation: bounceEmoji 1.8s ease-in-out infinite;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.4));
+    }
+    @keyframes bounceEmoji {
+      0%,100% { transform: translateY(0)    rotate(-3deg); }
+      50%      { transform: translateY(-8px) rotate(3deg);  }
+    }
+
+    /* Main message */
+    .eidiya-msg {
+      font-family: 'Amiri', serif;
+      font-size: clamp(1.05rem, 3vw, 1.35rem);
+      color: var(--cream);
+      line-height: 2;
+      margin-bottom: 1.6rem;
+    }
+    .eidiya-msg strong {
+      color: var(--gold-light);
+      font-size: 1.1em;
+    }
+
+    /* Phone number display */
+    .phone-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .8rem;
+      margin-bottom: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .phone-number {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.3rem, 4.5vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: .08em;
+      background: linear-gradient(90deg, var(--gold-light), var(--gold), #FFF5A0, var(--gold-light));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerText 3s linear infinite;
+      filter: drop-shadow(0 0 12px rgba(212,175,55,.5));
+    }
+    @keyframes shimmerText {
+      to { background-position: 200% center; }
+    }
+
+    /* Toggle number visibility */
+    .btn-eye {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.3rem;
+      opacity: .7;
+      transition: opacity .2s, transform .2s;
+      padding: .2rem;
+    }
+    .btn-eye:hover { opacity: 1; transform: scale(1.2); }
+
+    /* Action buttons row */
+    .eidiya-btns {
+      display: flex;
+      gap: .9rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.4rem;
+    }
+
+    /* Primary copy button */
+    .btn-copy-num {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light));
+      background-size: 200% auto;
+      color: var(--navy);
+      border: none;
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-family: 'Noto Naskh Arabic', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s, background-position .4s;
+      box-shadow: var(--glow-gold);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-copy-num:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 35px rgba(212,175,55,.85), 0 0 90px rgba(212,175,55,.4);
+      background-position: right center;
+    }
+    .btn-copy-num:active { transform: scale(.96); }
+
+    /* Ripple on copy */
+    .btn-copy-num .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,.4);
+      transform: scale(0);
+      animation: rippleOut .55s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleOut {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* Lazy / funny button */
+    .btn-lazy {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: transparent;
+      border: 1px solid rgba(212,175,55,.35);
+      color: var(--gold);
+      padding: .85rem 1.6rem;
+      border-radius: 50px;
+      font-family: 'Noto Naskh Arabic', serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .btn-lazy:hover {
+      background: rgba(212,175,55,.1);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 0 18px rgba(212,175,55,.25);
+    }
+
+    /* Funny response bubble */
+    .funny-bubble {
+      background: linear-gradient(135deg, rgba(46,23,96,.8), rgba(30,36,86,.9));
+      border: 1px solid rgba(212,175,55,.3);
+      border-radius: 16px;
+      padding: 1rem 1.4rem;
+      font-family: 'Amiri', serif;
+      font-size: 1.05rem;
+      color: var(--cream);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .6s cubic-bezier(.22,1,.36,1), opacity .5s, padding .4s;
+      opacity: 0;
+      margin-top: 0;
+    }
+    .funny-bubble.open {
+      max-height: 160px;
+      opacity: 1;
+      margin-top: .5rem;
+    }
+
+    /* Floating coins canvas overlay */
+    #coinCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 51;
+      pointer-events: none;
+    }
+
+    /* Section separator */
+    .section-sep {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 3rem auto 2rem;
+      opacity: 0;
+      transition: opacity .8s .2s;
+    }
+    .section-sep.revealed { opacity: 1; }
+    .section-sep-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.4), transparent);
+    }
+    .section-sep-icon {
+      font-size: 1.4rem;
+      animation: spinSlow 8s linear infinite;
+      filter: drop-shadow(0 0 6px rgba(212,175,55,.6));
+    }
+    @keyframes spinSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      .eidiya-card { padding: 1.8rem 1.1rem 1.5rem; }
+      .eidiya-btns { gap: .6rem; }
+      .btn-copy-num { padding: .75rem 1.4rem; font-size: .95rem; }
+      .phone-number { font-size: 1.2rem; }
+    }
   </style>
 </head>
 <body>
@@ -564,12 +857,40 @@
       <p class="dua-text" id="duaText"></p>
     </div>
 
-    <!-- Ornament -->
-    <div class="ornament">
-      <div class="ornament-line"></div>
-      <div class="ornament-diamond"></div>
-      <div class="ornament-line"></div>
+    <!-- ===== SECTION SEPARATOR ===== -->
+    <div class="section-sep" id="sectionSep">
+      <div class="section-sep-line"></div>
+      <span class="section-sep-icon">💸</span>
+      <div class="section-sep-line"></div>
     </div>
+
+    <!-- ===== EIDIYA SECTION ===== -->
+    <section class="eidiya-section" id="eidiyaSection">
+    <div class="eidiya-card">
+      <div class="eidiya-badge">✦ ركن العيدية ✦</div>
+      <span class="eidiya-emojis">💸🎁😄✨</span>
+      <p class="eidiya-msg" id="eidiyaMsg">
+        إذا كنت تريد أن تعطيني <strong>عيدية</strong> 😄<br/>
+        فرجاءً لا تخجل ❤️<br/>
+        وهذا <strong>رقم الإنستا باي</strong> الخاص بي:
+      </p>
+      <div class="phone-wrap">
+        <span class="phone-number" id="phoneDisplay">••••••••••</span>
+        <button class="btn-eye" id="btnEye" onclick="togglePhone()" title="إظهار/إخفاء">🙈</button>
+      </div>
+      <div class="eidiya-btns">
+        <button class="btn-copy-num" id="btnCopyNum" onclick="copyPhoneNumber(event)">
+          <span>📋</span><span id="copyBtnLabel">انسخ الرقم</span>
+        </button>
+        <button class="btn-lazy" onclick="lazyResponse()">
+          <span>😅</span><span id="lazyBtnLabel">مش هدفع</span>
+        </button>
+      </div>
+      <div class="funny-bubble" id="funnyBubble">
+        <span id="funnyText">خلاص سامحتك... بس متنساش السنة الجاية 😂</span>
+      </div>
+    </div>
+  </section>
 
     <!-- Share bar -->
     <div class="share-bar">
@@ -587,6 +908,9 @@
 
 </div><!-- end page-wrap -->
 
+<!-- Coin / cash particle canvas -->
+<canvas id="coinCanvas"></canvas>
+
 <script>
 /* ============================================================
    DATA
@@ -598,82 +922,7 @@ const DUAS_AR = [
   "اللهم بلِّغنا أعياداً كثيرة وأنت عنا راضٍ",
   "اللهم أدخل الفرحة والسرور على قلوب المسلمين في كل مكان",
   "اللهم تقبَّل دعاءنا وصيامنا وارزقنا الجنة برحمتك",
-  "اللهم يا حي يا قيوم تقبل عيدنا واجعله عيداً مباركاً",
-  "نسألك اللّهمّ أن تجعل عيد فطرنا عيد فرج على بلاد المسلمين، ونصرٍ على أعداء الدّين",
-  "اللّهمّ تقبّل منّا ما قدّمنا من طاعات، واجعل عيد الفطر يوم فرحتنا باستجابة الدّعوات",
-  "اللّهمّ اجعل أيّامنا كلّها أعياد، وأجعل أجمل أعيادنا يوم لقياك وأنت راضٍ عنّا",
-  "نسألك يا الله أن تُعيننا في يوم فطرك المُبارك على إقامة الصّلاة، وصلة الأرحام، وتآلف القلوب، والإكثار من الأذكار، يا من بذكره تطمئن القلوب",
-  "اللّهمّ بارك للأمّة الإسلاميّة بحلول عيد الفطر المُبارك، واجعله فاتحةً لكلّ خير وفرج وسعادة",
-  "اللّهمّ بارك لنا في أيّام عيد الفطر المُبارك، واجعله عيدًا لكلّ أحزاننا وهمومنا",
-  "إلهي يا معطي من تشاء ومانع من تشاء، إلهي فاعطنا اللطف والرحمة، وامنع عنا البطش والنقمة",
-  "اللّهمّ كما بلّغتنا شهر رمضان وليلة العيد المُباركة، أكرمنا ببلاغه أعواماً عديدة وأزمنة مديدة",
-  "أسألك يا الله أن لا يدخل أوّل يوم عيد الفطر المُبارك، إلّا وقد استجبت دعواتنا وغفرت ذلّاتنا",
-  "اللّهمّ إنّا كنّا لك من العابدين الشّاكرين القائمين فتقبّل منّا صيامنا وصالح أعمالنا، واجعل عيد فطرنا عيد سعادةٍ وفرح لنا",
-  "أسألك يا الله في ليلة العيد راحةً من كلّ هم، ومغفرةً من كلّ ذنب، وجبرًا لقلوبنا عن كلّ كسر",
-  "اللّهمّ لا تدع لنا ذنبًا إلّا غفرته، ولا همًّا إلّا قضيته، ولا حاجةً من حوائج الدّنيا إلّا وقضيتها لنا برحمتك يا أرحم الرّاحمين",
-  "اللّهمّ إنّي قد رفعت اكفّي إليك متضرّعًا، أن لا تدع لنا ذنبًا إلّا غفرته، ولا مريضًا إلّا شفيته، ولا مُبتلًا إلّا عافيته، ولا ميّتًا إلّا رحمته برحمتك يا أرحم الرّاحمين",
-  "اللّهمّ لك الحمد والشّكر على تمام الفضل والمنّة، نشكرك اللّهمّ على إكرامك لنا بالصّيام والقيام، ونسألك صلاح الحال والأفعال",
-  "اللّهمّ إنّك شرّعت العيد فرحةً وسرورًا، فتمّم يا رب فرحة وسرور علينا جميعًا",
-  "اللّهُمَّ في يوم عَيد الفطر هذَا أسألك بجودك وكرمك أن تتقبل منّا الصيام والقيام يا ربّ العالمين",
-  "اللهم تقبّل منا الشهر الكريم الذي صمناه لك خالصًا لوجهك الكريم واجعل العيد علينا سعيد",
-  "اللهم وقد أفطرنا بفطرك السعيد، فاكتبنا يا رب من عبادك الصالحين، وأدم علينا نعمتك وعافيتك",
-  "ربنا إنك عفو تحب العفو، فاعفُ عنا، واغفر لنا ذنوبنا، وأدخلنا برحمتك في عبادك الصالحين",
-  "اللهم إنا نسألك عيشة تقية وميتة سوية ومردا غير مخز ولا فاضح",
-  "اللهم اجعل قلوبنا نقية، وأيامنا سعيدة، وأبعد عنا كل ضيق وكدر، وأعطنا من السعادة ما يملأ أرواحنا نورًا",
-  "يا الله، اجعل هذا العيد بداية خير وفرح، وأبعد عن قلوبنا كل ما يُكدّرها",
-  "اللهم ارزقنا سعادة تغمر أرواحنا، وأزل عنّا كل هم، ولا تجعلنا نحمل ثقل الأيام",
-  "اللهم امنحنا راحةً لا تنتهي، وطمأنينةً تُبدد الخوف، وفرحةً تجعلنا نحيا بقلوب مطمئنة",
-  "اللهم اغفر لنا ذنوبنا، وارحمنا برحمتك الواسعة، واجعلنا من الذين رضيت عنهم يوم لقائك",
-  "يا الله، اجعل هذا العيد عيد مغفرة ورحمة، واغسل قلوبنا من الذنوب كما يُغسل الثوب الأبيض من الدنس",
-  "اللهم احفظ أهلي وأحبابي، وأدم علينا المحبة والتآلف، وارزقنا اجتماعًا دائمًا في طاعتك",
-  "يا رب، اجعل عائلتي وأصدقائي في سعادة دائمة، وأبعد عنهم كل مكروه",
-  "اللهم ارزق أحبتي صحةً وعافية، وأدم عليهم راحة البال، واجعل أيامهم مليئة بالخير",
-  "اللهم اجعل صباح عيد الفطر نورًا في وجوهنا، وسرورًا في قلوبنا، وبركة في أرزاقنا، وفرحًا لا ينقطع في حياتنا",
-  "اللهم اجعل هذا الصباح المبارك بداية لكل جميل، وشفاء لكل مريض، وفرجًا لكل مكروب، وسعادة لا تزول",
-  "اللهم في هذا الصباح العيد، تقبّل منا ما مضى من صيامنا وقيامنا، وأعنا على طاعتك في قادم الأيام، واجعلنا من المقبولين المرحومين",
-  "اللهم اجعل هذا العيد عيد رحمة ومغفرة، وعيد سعادة وأمن، وعيد توفيق وتيسير",
-  "اللهم لك الحمد أن بلغتنا رمضان، وأعنتنا فيه على الصيام والقيام، فاقبل منا عبادتنا ولا تردنا خائبين",
-  "اللهم كما رزقتنا صيام رمضان، فارزقنا القبول والمغفرة، واملأ قلوبنا شكرًا، وألسنتنا حمدًا",
-  "اللهم اجعلنا ممن ختموا رمضان برضاك، وبدأوا عيدهم بذكرك وشكرك، واكتب لنا أجر الصائمين القائمين",
-  "اللهم اجعل عيدنا هذا عيد فرح وسرور وتوفيق، واملأ قلوبنا بذكرك، وحياتنا ببركتك، وأيامنا بسعادتك",
-  "اللهم اجعل العيد لنا ولأهلنا مناسبة للفرج القريب، والرزق الواسع، والفرح الدائم",
-  "يا رب اجعل هذا العيد عيد بشرى وخير ورضا، اجعل فيه أيامنا أسعد، وأعمالنا أزكى، وأدعيتنا أقرب للاستجابة",
-  "اللهم اجعل لنا في يوم العيد نورًا يملأ دروبنا، وتوفيقًا يرافق خطواتنا، وسعادة تغمر قلوبنا",
-  "اللهم اجعل هذا العيد مفتاحًا لكل خير، وخاتمة لكل هم، وسببًا في تحقيق ما نتمنى",
-  "اللهم في صباح عيدك، ارحم من غابوا عن أعيادنا، وارزقهم فرحة لا تنقطع في جناتك",
-  "اللهم زين أيامنا بالتوبة والغفران وأكثر حسناتنا في الميزان، وأجزي عبادك المسلمين بجنّاتٍ ذات أفنان",
-  "كل عيد فطر وأنت لله طائع، ولأهلك نافع، ولدين الإسلام رافع، ولنبيّك محمّد صلّى الله عليه وسلّم تابع",
-  "أسأل الله أن يجعل عيدك نورًا، ونهارك سرورًا، وجعل لك في ختامه دعوةً لا ترد، وأكرمك برزقٍ لا يُعد",
-  "عسى تتحقق الأماني ونرجع نعايدكم سنين، ربي يجعلكم من العايدين الشاكرين الفايزين",
-  "اللّهمّ بارك لنا في أيّام عيد الفطر السّعيد، وارزقنا الصّلاح والتّوفيق لكلّ ما تحبّ وترضى",
-  "أسألك اللّهمّ أن تجعل عيد الفطر يوم خير وتيسير للأمور، وأن ترزق عبادك السّكينة والرّاحة من كلّ هم",
-  "أسأل الله الّذي طوى الشّهر الفضيل، وأعاد علينا العيد، أن يمدّكم بعمر مديد ويجعل أيامكم كلّها عيد في عيد",
-  "اللّهمّ إنّي أستودعك عائلتي التي هي أغلى ما أملك، واجعل عيد الفطر بداية فرح وسعادة لا تنتهي",
-  "اللّهمّ في يوم عيد الفطر المُبارك اجعل عائلتي ممن عفوت عنهم وقدّرت لهم الخير والسّعادة في الدّنيا والآخرة",
-  "اللّهمّ بمناسبة عيد الفطر أسألك أن تحفظ لي عائلتي وتبارك لي فيها، وأن تبعد عنهم الهمّ والحزن",
-  "أستودعك اللهمّ في يوم الفطر المبارك أولادي فلا تريني فيهم بأسًا يُبكيني",
-  "اللّهمّ إنّ أولادي هم حياتي التي لا أعيش من دونهم، فاكتب لهم الخير والسّعادة في حياتهم يا ربّ العالمين",
-  "اللّهمّ احفظ لي أولادي في يوم فطرك السّعيد فهم قطعة من روحي، اللّهمّ بارك لهم في أيّامهم، واجعل التّوفيق والنّجاح من حليفهم",
-  "اللّهمّ كما أسعدت الصّائمين بيوم الفطر، أسعد قلوب أصدقائي وأحبابي بما يحبّوا ويتمنّوا",
-  "أسألك اللّهم أن تجعل أصدقائي إلى رفقتي دائمًا، وأن تحفظهم لي وتبارك لي فيهم",
-  "اللّهمّ لك الحمد على أن بلغتنا شهر رمضان، اللّهمّ تقبّل منّا الصيام والقيام، وأكرمنا بحسن الختام",
-  "أسألك اللّهمّ في نهاية شهر رمضان أن تعتق رقابنا عن النّار، وتتقبّل صيامنا وقيامنا، وتغفر لنا ذنوبنا وآثامنا",
-  "اللّهمّ مع ختام شهر رمضان نسألك أن لا تجعل شهر رمضان آخر عهدنا به، وإن جعلته آخرها فاجعلنا من المرحومين لا من المحرومين",
-  "اللّهمّ كما أكرمتنا بيوم الفطر بعد الصّيام، أكرمنا بفرحة القلوب بعد سنين الحزن والآلام",
-  "أسألك اللّهم أن تجعل عيد الفطر المُبارك عيد نصرٍ وفتحٍ مبين لبلاد المسلمين",
-  "الحمد والشّكر لله الّذي بلّغنا شهر رمضان، ومن ثمّ بلّغنا عيد الفطر المُبارك، نسأل الله أن يجعلنا من الغانمين الفائزين العائدين",
-  "أشكر الله الّذي أكرمني بنعمة الإسلام، وأسأله بفضله العظيم أن يجعلني من عوّاد الشّهر الفضيل",
-  "اللّهمّ يا من تُعطي الخير لمن تشاء من عبادك، أن تجعل أوّل أيّام العيد فاتحة خيرٍ واستجابة لكلّ دعاء",
-  "أسألك يا الله في أوّل أيّام العيد المُباركة أن تجعل أحبّتي ممن تقبّلت أعمالهم، وغفرت لهم ذلّاتهم، وأعتق لهم رقابهم",
-  "اللّهم إنّا نسألك العفاف والغنى والتّقى والهدى وحسن عاقبة الآخرة والدّنيا، ونعوذ بك من الشّك والشّقاق والرّياء والسّمعة في دينك",
-  "اللّهمّ ارحم أمّي حبيبة قلبي ونور عيني، أسألك اللّهمّ أن تجعلها ممن عفوت عنهم وغفرت لهم وأسكنتهم فسيح جنّاتك",
-  "أسألك اللّهمّ في يوم الفطر أن ترحم من فارقونا وأصبحت أجسادهم تحت التّراب، اللّهمّ اغفر لهم وأجعل الجنّة نزلهم",
-  "اللّهمّ أدعوك بمناسبة عيد الفطر المُبارك أن تسعد قلب زوجي على قدر ما يُسعدني",
-  "اللّهمّ إنّي أسألك بأن تجعل زوجي ممن تقبّلت منه وغفرت له وأعتقت رقبته عن النّار",
-  "أدعوك يا الله بحقّ كلّ من قال لا إله إلا الله أن تجعل لنا مع دخول عيد الفطر السّعيد دخولًا لفرحةٍ دائمة لا تفارق قلوبنا أبدًا",
-  "يا كريم، اجعل قلوب من نحب مليئة بالسكينة، وارزقهم فرحًا لا ينقطع وسعادةً لا تزول",
-  "اللهم اجعلنا ممن تشملهم رحمتك في هذا اليوم المبارك، واكتب لنا نصيبًا من العفو والرضا",
-  "اللهم أذقنا في صباح هذا العيد حلاوة الرضا، وراحة البال، وطمأنينة القلب، واملأ حياتنا بالفرح والبركة والهداية"
+  "اللهم يا حي يا قيوم تقبل عيدنا واجعله عيداً مباركاً"
 ];
 
 const DUAS_EN = [
@@ -683,82 +932,7 @@ const DUAS_EN = [
   "O Allah, grant us many more Eids while You are pleased with us.",
   "O Allah, bring happiness and joy to the hearts of Muslims everywhere.",
   "O Allah, accept our prayer and fasting, and bless us with Your Paradise.",
-  "O Allah, the Living, the Sustaining — accept our Eid and make it blessed.",
-  "We ask You, O Allah, to make our Eid an Eid of relief for Muslim lands and victory over the enemies of faith.",
-  "O Allah, accept what we have offered of good deeds, and make Eid al-Fitr a day of joy through answered prayers.",
-  "O Allah, make all our days like Eid, and make our finest Eid the day we meet You while You are pleased with us.",
-  "We ask You, O Allah, to help us on this blessed day of Fitr in establishing prayer, maintaining family ties, uniting hearts, and increasing remembrance of You.",
-  "O Allah, bless the Muslim Ummah with the arrival of Eid al-Fitr, and make it an opening for all good, relief, and happiness.",
-  "O Allah, bless us in the days of Eid al-Fitr, and make it an Eid for all our sorrows and worries.",
-  "My Lord, You give to whom You will and withhold from whom You will; grant us gentleness and mercy, and withhold from us severity and punishment.",
-  "O Allah, as You have allowed us to reach Ramadan and the blessed night of Eid, honor us with reaching it for many years to come.",
-  "We ask You, O Allah, that the first day of Eid not enter except with our prayers answered and our sins forgiven.",
-  "O Allah, we were among Your worshippers, grateful and standing in prayer; accept our fasting and good deeds, and make our Eid one of happiness and joy.",
-  "We ask You, O Allah, on the night of Eid: relief from every worry, forgiveness for every sin, and healing for every broken heart.",
-  "O Allah, leave no sin unforgiven, no worry unresolved, and no worldly need uncared for — by Your mercy, O Most Merciful.",
-  "O Allah, I have raised my hands to You in supplication: forgive our sins, heal our sick, relieve our afflicted, and have mercy on our deceased.",
-  "O Allah, praise and thanks to You for Your favor; we thank You for honoring us with fasting and prayer, and we ask You for righteousness in our state and deeds.",
-  "O Allah, You have ordained Eid as joy and delight; complete for us all joy and delight.",
-  "O Allah, on this day of Eid al-Fitr I ask You by Your generosity and bounty to accept our fasting and prayer, O Lord of the worlds.",
-  "O Allah, accept from us the blessed month we fasted sincerely for Your sake, and make Eid joyful for us.",
-  "O Allah, we have broken our fast with Your blessed Fitr; write us among Your righteous servants, and continue Your favor and wellness upon us.",
-  "Our Lord, You are Forgiving and love forgiveness; forgive us our sins and admit us by Your mercy among Your righteous servants.",
-  "O Allah, we ask You for a pious life, a good death, and a return that is neither shameful nor disgraceful.",
-  "O Allah, make our hearts pure, our days happy, remove from us all distress, and give us happiness that fills our souls with light.",
-  "O Allah, make this Eid a beginning of good and joy, and remove from our hearts all that saddens them.",
-  "O Allah, grant us happiness that fills our souls, remove every worry from us, and do not burden us with the weight of days.",
-  "O Allah, grant us endless rest, peace that dispels fear, and joy that lets us live with tranquil hearts.",
-  "O Allah, forgive our sins, have mercy on us with Your vast mercy, and make us among those You are pleased with on the day we meet You.",
-  "O Allah, make this Eid an Eid of forgiveness and mercy, and wash our hearts of sin as white cloth is washed of stain.",
-  "O Allah, preserve our families and loved ones, maintain love and harmony among us, and grant us lasting reunion in Your obedience.",
-  "O Lord, make my family and friends constantly happy, and keep all harm away from them.",
-  "O Allah, grant our loved ones health and wellness, and grant them lasting peace of mind and days full of good.",
-  "O Allah, make the morning of Eid al-Fitr light in our faces, joy in our hearts, blessing in our provision, and unceasing joy in our lives.",
-  "O Allah, make this blessed morning a beginning of all good, healing for every sick person, relief for every distressed one, and lasting happiness.",
-  "O Allah, on this morning of Eid, accept what has passed of our fasting and prayer, help us obey You in days to come, and make us among the accepted and forgiven.",
-  "O Allah, make this Eid an Eid of mercy and forgiveness, an Eid of happiness and security, an Eid of success and ease.",
-  "O Allah, praise to You for allowing us to reach Ramadan and helping us in fasting and prayer; accept our worship and do not turn us away empty-handed.",
-  "O Allah, as You granted us fasting in Ramadan, grant us acceptance and forgiveness; fill our hearts with gratitude and our tongues with praise.",
-  "O Allah, make us among those who ended Ramadan with Your pleasure and began Eid with Your remembrance and thanks; write for us the reward of the fasting and praying.",
-  "O Allah, make this Eid of ours an Eid of joy, delight, and success; fill our hearts with Your remembrance, our lives with Your blessing, and our days with Your happiness.",
-  "O Allah, make Eid for us and our families an occasion for near relief, abundant provision, and lasting joy.",
-  "O Lord, make this Eid an Eid of glad tidings, good, and contentment; make our days happier, our deeds purer, and our prayers closer to acceptance.",
-  "O Allah, grant us on the day of Eid light that fills our paths, success that accompanies our steps, and happiness that fills our hearts.",
-  "O Allah, make this Eid a key to all good, an end to every worry, and a means to achieve what we hope for.",
-  "O Allah, on the morning of Your Eid, have mercy on those who have left our Eids, and grant them unceasing joy in Your gardens.",
-  "O Allah, adorn our days with repentance and forgiveness, increase our good deeds in the balance, and reward Your Muslim servants with gardens of delight.",
-  "May every Eid find you obedient to Allah, beneficial to your family, uplifting to Islam, and following the way of the Prophet ﷺ.",
-  "I ask Allah to make your Eid light, your day joy, and to grant you at its end a prayer that is never rejected and provision that never ends.",
-  "May our wishes be fulfilled and we celebrate with you for years to come; may our Lord make you among the thankful, successful celebrants.",
-  "O Allah, bless us in the days of the blessed Eid, and grant us righteousness and success in all that You love and approve.",
-  "We ask You, O Allah, to make Eid al-Fitr a day of good and ease, and to grant Your servants tranquility and relief from every worry.",
-  "I ask Allah, who folded the blessed month and returned the Eid to us, to extend your life and make all your days like Eid.",
-  "O Allah, I entrust to You my family, the dearest of what I own; make Eid al-Fitr a beginning of joy and happiness that never ends.",
-  "O Allah, on the day of Eid al-Fitr, make my family among those You have forgiven and destined good and happiness for in this life and the next.",
-  "O Allah, on the occasion of Eid al-Fitr, I ask You to preserve my family and bless me in them, and to remove worry and sorrow from them.",
-  "O Allah, I entrust to You my children on the day of blessed Fitr; do not show me in them any harm that makes me weep.",
-  "O Allah, my children are my life without whom I cannot live; write for them good and happiness in their lives, O Lord of the worlds.",
-  "O Allah, preserve my children on the day of Your blessed Fitr, for they are part of my soul; bless them in their days and make success their companion.",
-  "O Allah, as You have gladdened the fasting with the day of Fitr, gladden the hearts of my friends and loved ones with what they love and hope for.",
-  "I ask You, O Allah, to make my friends always by my side, and to preserve them for me and bless me in them.",
-  "O Allah, praise to You for allowing us to reach Ramadan; accept our fasting and prayer, and honor us with a good end.",
-  "We ask You, O Allah, at the end of Ramadan to free our necks from the Fire, accept our fasting and prayer, and forgive our sins and wrongdoings.",
-  "O Allah, with the end of Ramadan we ask You not to make it our last Ramadan; and if it is, make us among the forgiven, not the deprived.",
-  "O Allah, as You honored us with the day of Fitr after fasting, honor us with joy of hearts after years of sorrow and pain.",
-  "We ask You, O Allah, to make Eid al-Fitr an Eid of clear victory and conquest for Muslim lands.",
-  "Praise and thanks to Allah who allowed us to reach Ramadan and then Eid al-Fitr; we ask Allah to make us among the successful and victorious.",
-  "I thank Allah who honored me with the blessing of Islam, and I ask Him by His great favor to make me among those who return to the blessed month.",
-  "O Allah, You who give good to whom You will among Your servants, make the first days of Eid an opening of good and acceptance of every prayer.",
-  "We ask You, O Allah, on the first blessed days of Eid to make our loved ones among those whose deeds You accepted, whose sins You forgave, and whose necks You freed.",
-  "O Allah, we ask You for chastity, sufficiency, piety, guidance, and a good outcome in this life and the next; we seek refuge in You from doubt, discord, hypocrisy, and showing off in Your religion.",
-  "O Allah, have mercy on my mother, the beloved of my heart and light of my eye; make her among those You forgave and admitted to Your spacious gardens.",
-  "We ask You, O Allah, on the day of Fitr to have mercy on those who left us and whose bodies lie under the earth; forgive them and make Paradise their abode.",
-  "I call upon You, O Allah, on the occasion of Eid al-Fitr to gladden my spouse's heart as much as they gladden mine.",
-  "O Allah, I ask You to make my spouse among those You accepted, forgave, and freed from the Fire.",
-  "I call upon You, O Allah, by the right of all who said 'There is no god but Allah,' to make our entry into the blessed Eid an entry into lasting joy that never leaves our hearts.",
-  "O Generous One, fill the hearts of those we love with tranquility, and grant them unceasing joy and lasting happiness.",
-  "O Allah, make us among those encompassed by Your mercy on this blessed day, and write for us a share of pardon and acceptance.",
-  "O Allah, let us taste on this morning of Eid the sweetness of contentment, peace of mind, tranquility of heart, and fill our lives with joy, blessing, and guidance."
+  "O Allah, the Living, the Sustaining — accept our Eid and make it blessed."
 ];
 
 const LABELS = {
@@ -1034,6 +1208,206 @@ animateSparks();
 window.addEventListener('load', () => {
   setTimeout(() => burstSparkles(window.innerWidth / 2, window.innerHeight * .35), 800);
 });
+
+/* ============================================================
+   EIDIYA SECTION — SCROLL REVEAL
+============================================================ */
+(function initScrollReveal() {
+  const targets = [
+    document.getElementById('sectionSep'),
+    document.getElementById('eidiyaSection')
+  ];
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  targets.forEach(t => t && io.observe(t));
+})();
+
+/* ============================================================
+   PHONE NUMBER TOGGLE (hide/show)
+============================================================ */
+const REAL_NUMBER = '01118759692';
+let phoneVisible = false;
+
+function togglePhone() {
+  phoneVisible = !phoneVisible;
+  const display = document.getElementById('phoneDisplay');
+  const eye     = document.getElementById('btnEye');
+  if (phoneVisible) {
+    display.textContent = REAL_NUMBER;
+    eye.textContent = '👁️';
+  } else {
+    display.textContent = '••••••••••';
+    eye.textContent = '🙈';
+  }
+}
+
+/* ============================================================
+   COPY PHONE NUMBER
+============================================================ */
+function copyPhoneNumber(e) {
+  const btn = document.getElementById('btnCopyNum');
+
+  // Ripple effect
+  const ripple = document.createElement('span');
+  ripple.classList.add('ripple');
+  const rect   = btn.getBoundingClientRect();
+  const size   = Math.max(rect.width, rect.height);
+  ripple.style.width  = ripple.style.height = size + 'px';
+  ripple.style.left   = (e.clientX - rect.left  - size/2) + 'px';
+  ripple.style.top    = (e.clientY - rect.top   - size/2) + 'px';
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+
+  navigator.clipboard.writeText(REAL_NUMBER)
+    .then(() => {
+      showToast('تم نسخ الرقم 😎');
+      // Temporarily change label
+      const label = document.getElementById('copyBtnLabel');
+      label.textContent = 'تم النسخ ✓';
+      setTimeout(() => { label.textContent = 'انسخ الرقم'; }, 2200);
+      // Burst coins
+      const rect2 = btn.getBoundingClientRect();
+      burstCoins(rect2.left + rect2.width/2, rect2.top + rect2.height/2);
+      burstSparkles(rect2.left + rect2.width/2, rect2.top + rect2.height/2);
+      // Play click sound
+      playClickSound();
+    })
+    .catch(() => showToast('انسخ الرقم يدوياً: ' + REAL_NUMBER));
+}
+
+/* ============================================================
+   LAZY BUTTON — FUNNY RESPONSES
+============================================================ */
+const FUNNY_MSGS = [
+  'خلاص سامحتك... بس متنساش السنة الجاية 😂',
+  'أوك أوك، هيجي وقت تندم 😏💸',
+  'مفيش مشكلة... هتتذكرها يوم القيامة 😇',
+  'ربنا يكرمك... بعيييييد عن العيدية 😅',
+  'لو عندك قلب حتبعتها دلوقتي 😢💔',
+  'تمام، بس خليني أاشر لك على الرقم تاني 👆'
+];
+let lastFunnyIdx = -1;
+
+function lazyResponse() {
+  // Pick a new message
+  let idx;
+  do { idx = Math.floor(Math.random() * FUNNY_MSGS.length); }
+  while (idx === lastFunnyIdx && FUNNY_MSGS.length > 1);
+  lastFunnyIdx = idx;
+
+  const bubble = document.getElementById('funnyBubble');
+  const text   = document.getElementById('funnyText');
+
+  // Shake the lazy button
+  const btn = document.querySelector('.btn-lazy');
+  btn.style.animation = 'none';
+  void btn.offsetWidth;
+  btn.style.animation = 'shakeLazy .4s ease';
+
+  // Close then reopen to re-trigger transition
+  bubble.classList.remove('open');
+  void bubble.offsetWidth;
+  text.textContent = FUNNY_MSGS[idx];
+  requestAnimationFrame(() => requestAnimationFrame(() => bubble.classList.add('open')));
+
+  playClickSound(300);
+}
+
+/* ============================================================
+   COIN / MONEY PARTICLE BURST
+============================================================ */
+const coinCanvas = document.getElementById('coinCanvas');
+const cCtx       = coinCanvas.getContext('2d');
+let coins = [];
+
+function resizeCoin() {
+  coinCanvas.width  = window.innerWidth;
+  coinCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCoin);
+resizeCoin();
+
+function burstCoins(cx, cy) {
+  const SYMBOLS = ['💰','💸','🪙','💵','✨'];
+  for (let i = 0; i < 24; i++) {
+    const angle = -Math.PI/2 + (Math.random() - .5) * Math.PI * 1.6;
+    const speed = Math.random() * 5 + 3;
+    coins.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed * (Math.random() > .5 ? 1 : -1),
+      vy: Math.sin(angle) * speed - Math.random() * 3,
+      symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      size: Math.random() * 14 + 14,
+      alpha: 1,
+      decay: Math.random() * .016 + .01,
+      gravity: .14 + Math.random() * .06,
+      wobble: Math.random() * .2 - .1,
+      t: 0
+    });
+  }
+}
+
+function animateCoins() {
+  cCtx.clearRect(0, 0, coinCanvas.width, coinCanvas.height);
+  coins = coins.filter(c => c.alpha > .02);
+  coins.forEach(c => {
+    c.t++;
+    c.x += c.vx + Math.sin(c.t * .18) * c.wobble * 2;
+    c.y += c.vy;
+    c.vy += c.gravity;
+    c.alpha -= c.decay;
+    cCtx.globalAlpha = Math.max(0, c.alpha);
+    cCtx.font = `${c.size}px serif`;
+    cCtx.textAlign = 'center';
+    cCtx.fillText(c.symbol, c.x, c.y);
+  });
+  cCtx.globalAlpha = 1;
+  requestAnimationFrame(animateCoins);
+}
+animateCoins();
+
+/* ============================================================
+   CLICK SOUND (synthesised via Web Audio — no file needed)
+============================================================ */
+function playClickSound(freq = 880) {
+  try {
+    const ctx  = new (window.AudioContext || window.webkitAudioContext)();
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + .08);
+    gain.gain.setValueAtTime(.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .28);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + .3);
+  } catch(e) { /* silently ignore if audio blocked */ }
+}
+
+/* ============================================================
+   SHAKE KEYFRAME (injected dynamically)
+============================================================ */
+(function injectShakeKeyframe() {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shakeLazy {
+      0%,100% { transform: translateX(0) rotate(0); }
+      20%      { transform: translateX(-5px) rotate(-3deg); }
+      40%      { transform: translateX(5px) rotate(3deg); }
+      60%      { transform: translateX(-4px) rotate(-2deg); }
+      80%      { transform: translateX(4px) rotate(2deg); }
+    }
+  `;
+  document.head.appendChild(style);
+})();
 </script>
 </body>
 </html>
