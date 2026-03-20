@@ -279,13 +279,13 @@
       max-width: 680px;
       width: 100%;
       margin: 2rem auto 0;
-      background: linear-gradient(135deg, rgba(46,23,96,.7), rgba(11,15,46,.85));
+      background: transparent;
       border: 1px solid rgba(212,175,55,.35);
       border-radius: 20px;
       padding: 2.2rem 2rem;
       text-align: center;
-      box-shadow: var(--glow-purple), inset 0 1px 0 rgba(212,175,55,.15);
-      backdrop-filter: blur(10px);
+      /* box-shadow: var(--glow-purple), inset 0 1px 0 rgba(212,175,55,.15); */
+      /* backdrop-filter: blur(10px); */
       opacity: 0;
       transform: translateY(30px) scale(.97);
       transition: opacity .6s ease, transform .6s ease;
@@ -456,58 +456,19 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Outer card with gradient border trick */
+    /* Outer card — fully transparent, no background, shows home container */
     .eidiya-card {
       position: relative;
-      background: linear-gradient(145deg, #1a0d3d, #0e1535, #1a2050);
+      background: none;
       border-radius: 24px;
       padding: 2.5rem 2rem 2rem;
       text-align: center;
-      overflow: hidden;
-      /* double-ring border */
-      box-shadow:
-        0 0 0 1px rgba(212,175,55,.5),
-        0 0 0 3px rgba(212,175,55,.1),
-        0 20px 60px rgba(0,0,0,.55),
-        inset 0 1px 0 rgba(212,175,55,.2);
+      border: 1px solid rgba(212,175,55,.4);
+      box-shadow: 0 0 30px rgba(0,0,0,.15);
     }
 
-    /* Animated gradient shimmer on border */
-    .eidiya-card::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      background: conic-gradient(
-        from var(--border-angle, 0deg),
-        transparent 30%,
-        rgba(212,175,55,.6) 40%,
-        rgba(245,217,122,.9) 50%,
-        rgba(212,175,55,.6) 60%,
-        transparent 70%
-      );
-      border-radius: 26px;
-      z-index: 0;
-      animation: rotateBorder 4s linear infinite;
-    }
-    .eidiya-card::after {
-      content: '';
-      position: absolute;
-      inset: 2px;
-      background: linear-gradient(145deg, #1a0d3d, #0e1535, #1a2050);
-      border-radius: 22px;
-      z-index: 1;
-    }
-    @keyframes rotateBorder {
-      to { --border-angle: 360deg; }
-    }
-    @property --border-angle {
-      syntax: '<angle>';
-      inherits: false;
-      initial-value: 0deg;
-    }
-
-    /* All direct children sit above the ::after overlay */
-    .eidiya-card > * { position: relative; z-index: 2; }
+    /* All direct children positioned normally */
+    .eidiya-card > * { position: relative; z-index: 1; }
 
     /* Header badge */
     .eidiya-badge {
@@ -867,12 +828,12 @@
     <!-- ===== EIDIYA SECTION ===== -->
     <section class="eidiya-section" id="eidiyaSection">
     <div class="eidiya-card">
-      <div class="eidiya-badge">✦ ركن العيدية ✦</div>
+      <div class="eidiya-badge">✦  نيجي للجد بقا ركن العيدية ✦</div>
       <span class="eidiya-emojis">💸🎁😄✨</span>
       <p class="eidiya-msg" id="eidiyaMsg">
-        إذا كنت تريد أن تعطيني <strong>عيدية</strong> 😄<br/>
-        فرجاءً لا تخجل ❤️<br/>
-        وهذا <strong>رقم الإنستا باي</strong> الخاص بي:
+        لو جاية منك ب<strong>عيدية</strong> 😄<br/>
+         غكلك ذوق وبيض الله وجهك والله ❤️😄<br/>
+         <strong>رقم الإنستا باي</strong> يحبيب اخوك:
       </p>
       <div class="phone-wrap">
         <span class="phone-number" id="phoneDisplay">••••••••••</span>
