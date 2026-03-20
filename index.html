@@ -828,7 +828,7 @@
     <!-- ===== EIDIYA SECTION ===== -->
     <section class="eidiya-section" id="eidiyaSection">
     <div class="eidiya-card">
-      <div class="eidiya-badge">✦  نيجي للجد بقا ركن العيدية ✦</div>
+      <div class="eidiya-badge" id="eidiyaBadge">✦ نيجي للجد بقا ركن العيدية ✦</div>
       <span class="eidiya-emojis">💸🎁😄✨</span>
       <p class="eidiya-msg" id="eidiyaMsg">
         لو جاية منك ب<strong>عيدية</strong> 😄<br/>
@@ -898,26 +898,42 @@ const DUAS_EN = [
 
 const LABELS = {
   ar: {
-    title:    "Eid Mubarak",
-    subtitle: "تقبل الله منا ومنكم صالح الأعمال",
-    subEn:    "May Allah accept from us and from you righteous deeds",
-    btnDua:   "اضغط لعرض الدعاء",
-    duaLabel: "دعاء العيد",
-    shareCopy:"نسخ رابط التهنئة",
-    shareWa:  "مشاركة عبر واتساب",
-    footer:   "✦ كل عام وأنتم بخير ✦",
-    toast:    "تم نسخ الرابط! 🎉"
+    title:       "Eid Mubarak",
+    subtitle:    "تقبل الله منا ومنكم صالح الأعمال",
+    subEn:       "May Allah accept from us and from you righteous deeds",
+    btnDua:      "اضغط لعرض الدعاء",
+    duaLabel:    "دعاء العيد",
+    shareCopy:   "نسخ رابط التهنئة",
+    shareWa:     "مشاركة عبر واتساب",
+    footer:      "✦ كل عام وأنتم بخير ✦",
+    toast:       "تم نسخ الرابط! 🎉",
+    eidiyaBadge: "✦ نيجي للجد بقا ركن العيدية ✦",
+    eidiyaMsg:   "لو جاية منك ب<strong>عيدية</strong> 😄<br/>فكلك ذوق وبيض الله وجهك والله ❤️😄<br/><strong>رقم الإنستا باي</strong> يحبيب اخوك:",
+    copyBtnLabel:"انسخ الرقم",
+    lazyBtnLabel:"مش هدفع",
+    funnyText:   "خلاص سامحتك... بس متنساش السنة الجاية 😂",
+    toastCopyNum:"تم نسخ الرقم 😎",
+    toastCopyFail:"انسخ الرقم يدوياً: ",
+    copiedDone:   "تم النسخ ✓"
   },
   en: {
-    title:    "Eid Mubarak",
-    subtitle: "May Allah Accept Our Good Deeds",
-    subEn:    "تقبل الله منا ومنكم صالح الأعمال",
-    btnDua:   "Show an Eid Du'a 🤲",
-    duaLabel: "Eid Du'a",
-    shareCopy:"Copy Greeting Link",
-    shareWa:  "Share on WhatsApp",
-    footer:   "✦ Wishing You a Blessed Eid ✦",
-    toast:    "Link copied! 🎉"
+    title:       "Eid Mubarak",
+    subtitle:    "May Allah Accept Our Good Deeds",
+    subEn:       "تقبل الله منا ومنكم صالح الأعمال",
+    btnDua:      "Show an Eid Du'a 🤲",
+    duaLabel:    "Eid Du'a",
+    shareCopy:   "Copy Greeting Link",
+    shareWa:     "Share on WhatsApp",
+    footer:      "✦ Wishing You a Blessed Eid ✦",
+    toast:       "Link copied! 🎉",
+    eidiyaBadge: "✦ Let's Get Serious — Eidiyah Corner ✦",
+    eidiyaMsg:   "If you're giving me <strong>Eidiyah</strong> 😄<br/>You've got great taste, may Allah bless you ❤️😄<br/>Here's my <strong>InstaPay</strong> number, bro:",
+    copyBtnLabel:"Copy Number",
+    lazyBtnLabel:"I won't pay",
+    funnyText:   "Fine, I forgive you... but don't forget next year 😂",
+    toastCopyNum:"Number copied 😎",
+    toastCopyFail:"Copy number manually: ",
+    copiedDone:   "Copied ✓"
   }
 };
 
@@ -941,6 +957,11 @@ function setLang(lang) {
   document.getElementById('shareCopy').textContent    = L.shareCopy;
   document.getElementById('shareWa').textContent      = L.shareWa;
   document.getElementById('footerText').textContent   = L.footer;
+  document.getElementById('eidiyaBadge').textContent = L.eidiyaBadge;
+  document.getElementById('eidiyaMsg').innerHTML     = L.eidiyaMsg;
+  document.getElementById('copyBtnLabel').textContent= L.copyBtnLabel;
+  document.getElementById('lazyBtnLabel').textContent= L.lazyBtnLabel;
+  document.getElementById('funnyText').textContent   = L.funnyText;
 
   document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
   document.getElementById('btnEn').classList.toggle('active', lang === 'en');
@@ -1227,11 +1248,10 @@ function copyPhoneNumber(e) {
 
   navigator.clipboard.writeText(REAL_NUMBER)
     .then(() => {
-      showToast('تم نسخ الرقم 😎');
-      // Temporarily change label
+      showToast(LABELS[currentLang].toastCopyNum);
       const label = document.getElementById('copyBtnLabel');
-      label.textContent = 'تم النسخ ✓';
-      setTimeout(() => { label.textContent = 'انسخ الرقم'; }, 2200);
+      label.textContent = LABELS[currentLang].copiedDone;
+      setTimeout(() => { label.textContent = LABELS[currentLang].copyBtnLabel; }, 2200);
       // Burst coins
       const rect2 = btn.getBoundingClientRect();
       burstCoins(rect2.left + rect2.width/2, rect2.top + rect2.height/2);
@@ -1239,13 +1259,13 @@ function copyPhoneNumber(e) {
       // Play click sound
       playClickSound();
     })
-    .catch(() => showToast('انسخ الرقم يدوياً: ' + REAL_NUMBER));
+    .catch(() => showToast(LABELS[currentLang].toastCopyFail + REAL_NUMBER));
 }
 
 /* ============================================================
    LAZY BUTTON — FUNNY RESPONSES
 ============================================================ */
-const FUNNY_MSGS = [
+const FUNNY_MSGS_AR = [
   'خلاص سامحتك... بس متنساش السنة الجاية 😂',
   'أوك أوك، هيجي وقت تندم 😏💸',
   'مفيش مشكلة... هتتذكرها يوم القيامة 😇',
@@ -1253,13 +1273,21 @@ const FUNNY_MSGS = [
   'لو عندك قلب حتبعتها دلوقتي 😢💔',
   'تمام، بس خليني أاشر لك على الرقم تاني 👆'
 ];
+const FUNNY_MSGS_EN = [
+  "Fine, I forgive you... but don't forget next year 😂",
+  "Okay okay, you'll regret it someday 😏💸",
+  "No problem... you'll remember on Judgment Day 😇",
+  "May Allah bless you... far from the Eidiyah 😅",
+  "If you have a heart you'll send it now 😢💔",
+  "Alright, but let me point you to the number again 👆"
+];
 let lastFunnyIdx = -1;
 
 function lazyResponse() {
-  // Pick a new message
+  const msgs = currentLang === 'ar' ? FUNNY_MSGS_AR : FUNNY_MSGS_EN;
   let idx;
-  do { idx = Math.floor(Math.random() * FUNNY_MSGS.length); }
-  while (idx === lastFunnyIdx && FUNNY_MSGS.length > 1);
+  do { idx = Math.floor(Math.random() * msgs.length); }
+  while (idx === lastFunnyIdx && msgs.length > 1);
   lastFunnyIdx = idx;
 
   const bubble = document.getElementById('funnyBubble');
@@ -1274,7 +1302,7 @@ function lazyResponse() {
   // Close then reopen to re-trigger transition
   bubble.classList.remove('open');
   void bubble.offsetWidth;
-  text.textContent = FUNNY_MSGS[idx];
+  text.textContent = msgs[idx];
   requestAnimationFrame(() => requestAnimationFrame(() => bubble.classList.add('open')));
 
   playClickSound(300);
