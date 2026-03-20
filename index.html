@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عيد مبارك | Eid Mubarak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       CSS VARIABLES & RESET
+    ============================================================ */
+    :root {
+      --gold:        #D4AF37;
+      --gold-light:  #F5D97A;
+      --gold-dim:    #8B6914;
+      --navy:        #0B0F2E;
+      --navy-mid:    #141840;
+      --navy-light:  #1E2456;
+      --purple:      #2E1760;
+      --purple-glow: #6B3FA0;
+      --teal:        #0D7377;
+      --cream:       #FFF8E7;
+      --white:       #FFFFFF;
+      --glow-gold:   0 0 20px rgba(212,175,55,0.6), 0 0 60px rgba(212,175,55,0.3);
+      --glow-purple: 0 0 30px rgba(107,63,160,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--cream);
+      font-family: 'Noto Naskh Arabic', serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ============================================================
+       CANVAS — STAR & PARTICLE BACKGROUND
+    ============================================================ */
+    #starCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       LANGUAGE TOGGLE
+    ============================================================ */
+    .lang-toggle {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.2rem;
+      z-index: 100;
+      display: flex;
+      gap: .4rem;
+    }
+
+    .lang-btn {
+      background: rgba(212,175,55,.15);
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      padding: .35rem .9rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: .8rem;
+      letter-spacing: .05em;
+      transition: all .3s;
+      font-family: 'Cinzel Decorative', serif;
+    }
+
+    .lang-btn.active,
+    .lang-btn:hover {
+      background: var(--gold);
+      color: var(--navy);
+      box-shadow: var(--glow-gold);
+    }
+
+    /* ============================================================
+       DECORATIVE BORDER FRAME
+    ============================================================ */
+    .frame {
+      position: fixed;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .frame::before, .frame::after {
+      content: '';
+      position: absolute;
+      width: 24px; height: 24px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .frame::before { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+    .frame::after  { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+
+    /* ============================================================
+       MAIN LAYOUT
+    ============================================================ */
+    .page-wrap {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem 3rem;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    /* Animated crescent */
+    .crescent-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .crescent-svg {
+      width: 90px;
+      animation: floatCrescent 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px var(--gold));
+    }
+
+    @keyframes floatCrescent {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50%      { transform: translateY(-14px) rotate(5deg); }
+    }
+
+    .hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, #C8860A 70%, var(--gold-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      line-height: 1.1;
+      animation: titleReveal 1.4s cubic-bezier(.22,1,.36,1) both;
+      letter-spacing: .04em;
+    }
+
+    @keyframes titleReveal {
+      from { opacity: 0; transform: translateY(40px) scale(.95); }
+      to   { opacity: 1; transform: translateY(0)   scale(1);   }
+    }
+
+    .hero-emoji {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      animation: titleReveal 1.4s .2s cubic-bezier(.22,1,.36,1) both;
+      display: block;
+      margin-top: .4rem;
+      filter: drop-shadow(0 0 12px rgba(212,175,55,.8));
+    }
+
+    .hero-subtitle {
+      font-family: 'Amiri', serif;
+      font-size: clamp(1.15rem, 3.5vw, 1.7rem);
+      color: var(--gold-light);
+      opacity: 0;
+      margin-top: 1.2rem;
+      animation: fadeUp .9s 1s ease both;
+      text-shadow: 0 0 14px rgba(212,175,55,.45);
+      line-height: 1.7;
+    }
+
+    .hero-subtitle-en {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(.75rem, 2vw, 1rem);
+      color: rgba(245,217,122,.55);
+      letter-spacing: .12em;
+      margin-top: .6rem;
+      opacity: 0;
+      animation: fadeUp .9s 1.3s ease both;
+    }
+
+    .divider {
+      width: 180px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 2rem auto;
+      opacity: 0;
+      animation: fadeUp .9s 1.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ============================================================
+       LANTERNS ROW
+    ============================================================ */
+    .lanterns-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(1.5rem, 5vw, 4rem);
+      margin: 1rem 0 2.5rem;
+      opacity: 0;
+      animation: fadeUp .9s 1.7s ease both;
+    }
+
+    .lantern {
+      cursor: default;
+      animation: swingLantern 3s ease-in-out infinite;
+      transform-origin: top center;
+    }
+
+    .lantern:nth-child(2) { animation-delay: .5s; }
+    .lantern:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes swingLantern {
+      0%,100% { transform: rotate(-6deg); }
+      50%      { transform: rotate(6deg);  }
+    }
+
+    /* ============================================================
+       DUA BUTTON
+    ============================================================ */
+    .btn-dua {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      color: var(--navy);
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-family: 'Noto Naskh Arabic', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--glow-gold);
+      transition: transform .25s, box-shadow .25s;
+      opacity: 0;
+      animation: fadeUp .9s 1.9s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-dua::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.25), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .btn-dua:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 0 30px rgba(212,175,55,.8), 0 0 80px rgba(212,175,55,.35);
+    }
+    .btn-dua:hover::after { opacity: 1; }
+    .btn-dua:active { transform: scale(.97); }
+
+    /* ============================================================
+       DUA CARD
+    ============================================================ */
+    .dua-card {
+      max-width: 680px;
+      width: 100%;
+      margin: 2rem auto 0;
+      background: linear-gradient(135deg, rgba(46,23,96,.7), rgba(11,15,46,.85));
+      border: 1px solid rgba(212,175,55,.35);
+      border-radius: 20px;
+      padding: 2.2rem 2rem;
+      text-align: center;
+      box-shadow: var(--glow-purple), inset 0 1px 0 rgba(212,175,55,.15);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(30px) scale(.97);
+      transition: opacity .6s ease, transform .6s ease;
+      pointer-events: none;
+    }
+
+    .dua-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .dua-text {
+      font-family: 'Amiri', serif;
+      font-size: clamp(1.2rem, 3.5vw, 1.65rem);
+      color: var(--cream);
+      line-height: 2;
+      text-shadow: 0 0 10px rgba(212,175,55,.2);
+    }
+
+    .dua-label {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: .7rem;
+      letter-spacing: .15em;
+      color: var(--gold-dim);
+      margin-bottom: .8rem;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       ORNAMENT / GEOMETRIC SECTION DIVIDER
+    ============================================================ */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      max-width: 680px;
+      margin: 3rem auto 1rem;
+      opacity: 0;
+      animation: fadeUp .9s 2.1s ease both;
+    }
+
+    .ornament-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.5), transparent);
+    }
+
+    .ornament-diamond {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      box-shadow: var(--glow-gold);
+    }
+
+    /* ============================================================
+       SHARE BUTTON
+    ============================================================ */
+    .share-bar {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp .9s 2.3s ease both;
+    }
+
+    .btn-share {
+      background: transparent;
+      border: 1px solid rgba(212,175,55,.4);
+      color: var(--gold);
+      padding: .65rem 1.6rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Noto Naskh Arabic', serif;
+      font-size: .95rem;
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .btn-share:hover {
+      background: rgba(212,175,55,.12);
+      border-color: var(--gold);
+      box-shadow: var(--glow-gold);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================================
+       TOAST NOTIFICATION
+    ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: linear-gradient(135deg, var(--purple), var(--navy-light));
+      border: 1px solid var(--gold-dim);
+      color: var(--gold-light);
+      padding: .8rem 1.8rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      z-index: 999;
+      transition: transform .4s cubic-bezier(.22,1,.36,1), opacity .4s;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: var(--glow-purple);
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ============================================================
+       SPARKLE OVERLAY
+    ============================================================ */
+    #sparkleCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer {
+      margin-top: 4rem;
+      font-size: .78rem;
+      color: rgba(212,175,55,.3);
+      letter-spacing: .1em;
+      font-family: 'Cinzel Decorative', serif;
+      opacity: 0;
+      animation: fadeUp .9s 2.5s ease both;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 600px) {
+      .hero { padding-top: 3.5rem; }
+      .dua-card { padding: 1.5rem 1.2rem; }
+      .lanterns-row { gap: 1.2rem; }
+      .lantern svg { width: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background stars -->
+<canvas id="starCanvas"></canvas>
+<!-- Sparkle effect layer -->
+<canvas id="sparkleCanvas"></canvas>
+
+<!-- Decorative corner frame -->
+<div class="frame"></div>
+
+<!-- Language toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('ar')" id="btnAr">عربي</button>
+  <button class="lang-btn"        onclick="setLang('en')" id="btnEn">EN</button>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<div class="page-wrap">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+
+    <!-- Crescent SVG -->
+    <div class="crescent-wrap">
+      <svg class="crescent-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cg" cx="40%" cy="40%">
+            <stop offset="0%"   stop-color="#F5D97A"/>
+            <stop offset="100%" stop-color="#8B6914"/>
+          </radialGradient>
+        </defs>
+        <!-- Full circle minus offset = crescent -->
+        <circle cx="50" cy="50" r="38" fill="url(#cg)"/>
+        <circle cx="66" cy="40" r="32" fill="#0B0F2E"/>
+        <!-- Stars beside crescent -->
+        <polygon points="22,18 24,24 30,24 25,28 27,34 22,30 17,34 19,28 14,24 20,24" fill="#F5D97A" opacity=".9"/>
+        <polygon points="76,68 77.5,72 82,72 78.5,74.5 80,79 76,76.5 72,79 73.5,74.5 70,72 74.5,72" fill="#F5D97A" opacity=".75"/>
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <h1 class="hero-title" id="heroTitle">Eid Mubarak</h1>
+    <span class="hero-emoji">🌙✨</span>
+    <p class="hero-subtitle" id="heroSubtitle">تقبل الله منا ومنكم صالح الأعمال</p>
+    <p class="hero-subtitle-en" id="heroSubEn">May Allah accept from us and from you righteous deeds</p>
+    <div class="divider"></div>
+
+    <!-- Lanterns row -->
+    <div class="lanterns-row">
+      <!-- Lantern 1 -->
+      <div class="lantern">
+        <svg width="52" height="80" viewBox="0 0 52 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="lg1" cx="50%" cy="60%">
+              <stop offset="0%"   stop-color="#FFD700" stop-opacity=".95"/>
+              <stop offset="100%" stop-color="#8B4513" stop-opacity=".8"/>
+            </radialGradient>
+          </defs>
+          <line x1="26" y1="0" x2="26" y2="10" stroke="#D4AF37" stroke-width="2"/>
+          <path d="M18 10 Q26 8 34 10 L38 22 L38 62 Q26 68 14 62 L14 22 Z" fill="url(#lg1)" opacity=".9"/>
+          <ellipse cx="26" cy="22" rx="12" ry="5" fill="#D4AF37" opacity=".7"/>
+          <ellipse cx="26" cy="62" rx="12" ry="5" fill="#D4AF37" opacity=".7"/>
+          <!-- Lattice lines -->
+          <line x1="26" y1="10" x2="26" y2="68" stroke="rgba(212,175,55,.4)" stroke-width=".8"/>
+          <line x1="14" y1="42" x2="38" y2="42" stroke="rgba(212,175,55,.4)" stroke-width=".8"/>
+          <!-- Glow center -->
+          <ellipse cx="26" cy="42" rx="7" ry="9" fill="#FFF8C0" opacity=".55"/>
+          <line x1="26" y1="68" x2="26" y2="76" stroke="#D4AF37" stroke-width="1.5"/>
+          <ellipse cx="26" cy="77" rx="4" ry="2" fill="#D4AF37" opacity=".5"/>
+        </svg>
+      </div>
+      <!-- Lantern 2 (bigger, center) -->
+      <div class="lantern">
+        <svg width="66" height="100" viewBox="0 0 66 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="lg2" cx="50%" cy="60%">
+              <stop offset="0%"   stop-color="#FFE566"/>
+              <stop offset="80%"  stop-color="#C06000"/>
+              <stop offset="100%" stop-color="#6B3000"/>
+            </radialGradient>
+          </defs>
+          <line x1="33" y1="0" x2="33" y2="12" stroke="#D4AF37" stroke-width="2.5"/>
+          <path d="M21 12 Q33 9 45 12 L50 28 L50 78 Q33 86 16 78 L16 28 Z" fill="url(#lg2)" opacity=".95"/>
+          <ellipse cx="33" cy="28" rx="17" ry="7" fill="#D4AF37" opacity=".75"/>
+          <ellipse cx="33" cy="78" rx="17" ry="7" fill="#D4AF37" opacity=".75"/>
+          <line x1="33" y1="12" x2="33" y2="86" stroke="rgba(212,175,55,.45)" stroke-width="1"/>
+          <line x1="16" y1="53" x2="50" y2="53" stroke="rgba(212,175,55,.45)" stroke-width="1"/>
+          <ellipse cx="33" cy="53" rx="10" ry="13" fill="#FFF5A0" opacity=".5"/>
+          <line x1="33" y1="86" x2="33" y2="96" stroke="#D4AF37" stroke-width="2"/>
+          <ellipse cx="33" cy="98" rx="5" ry="2.5" fill="#D4AF37" opacity=".55"/>
+        </svg>
+      </div>
+      <!-- Lantern 3 -->
+      <div class="lantern">
+        <svg width="52" height="80" viewBox="0 0 52 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="lg3" cx="50%" cy="60%">
+              <stop offset="0%"   stop-color="#FF9B44" stop-opacity=".95"/>
+              <stop offset="100%" stop-color="#6B2000" stop-opacity=".85"/>
+            </radialGradient>
+          </defs>
+          <line x1="26" y1="0" x2="26" y2="10" stroke="#D4AF37" stroke-width="2"/>
+          <path d="M18 10 Q26 8 34 10 L38 22 L38 62 Q26 68 14 62 L14 22 Z" fill="url(#lg3)" opacity=".9"/>
+          <ellipse cx="26" cy="22" rx="12" ry="5" fill="#D4AF37" opacity=".7"/>
+          <ellipse cx="26" cy="62" rx="12" ry="5" fill="#D4AF37" opacity=".7"/>
+          <line x1="26" y1="10" x2="26" y2="68" stroke="rgba(212,175,55,.4)" stroke-width=".8"/>
+          <line x1="14" y1="42" x2="38" y2="42" stroke="rgba(212,175,55,.4)" stroke-width=".8"/>
+          <ellipse cx="26" cy="42" rx="7" ry="9" fill="#FFD080" opacity=".5"/>
+          <line x1="26" y1="68" x2="26" y2="76" stroke="#D4AF37" stroke-width="1.5"/>
+          <ellipse cx="26" cy="77" rx="4" ry="2" fill="#D4AF37" opacity=".5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Dua button -->
+    <button class="btn-dua" id="btnDua" onclick="showDua()">
+      <span id="btnDuaIcon">🤲</span>
+      <span id="btnDuaText">اضغط لعرض الدعاء</span>
+    </button>
+
+    <!-- Dua card -->
+    <div class="dua-card" id="duaCard">
+      <p class="dua-label" id="duaLabel">دعاء العيد</p>
+      <p class="dua-text" id="duaText"></p>
+    </div>
+
+    <!-- Ornament -->
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line"></div>
+    </div>
+
+    <!-- Share bar -->
+    <div class="share-bar">
+      <button class="btn-share" onclick="copyLink()">
+        <span>🔗</span><span id="shareCopy">نسخ رابط التهنئة</span>
+      </button>
+      <button class="btn-share" onclick="shareWhatsApp()">
+        <span>💬</span><span id="shareWa">مشاركة عبر واتساب</span>
+      </button>
+    </div>
+
+  </section>
+
+  <div class="footer" id="footerText">✦ كل عام وأنتم بخير ✦</div>
+
+</div><!-- end page-wrap -->
+
+<script>
+/* ============================================================
+   DATA
+============================================================ */
+const DUAS_AR = [
+  "اللهم تقبل منا الصيام والقيام وصالح الأعمال",
+  "اللهم اجعل هذا العيد فرحةً وسعادةً على المسلمين",
+  "اللهم اغفر لنا وارحمنا واعتق رقابنا من النار",
+  "اللهم بلِّغنا أعياداً كثيرة وأنت عنا راضٍ",
+  "اللهم أدخل الفرحة والسرور على قلوب المسلمين في كل مكان",
+  "اللهم تقبَّل دعاءنا وصيامنا وارزقنا الجنة برحمتك",
+  "اللهم يا حي يا قيوم تقبل عيدنا واجعله عيداً مباركاً",
+  "نسألك اللّهمّ أن تجعل عيد فطرنا عيد فرج على بلاد المسلمين، ونصرٍ على أعداء الدّين",
+  "اللّهمّ تقبّل منّا ما قدّمنا من طاعات، واجعل عيد الفطر يوم فرحتنا باستجابة الدّعوات",
+  "اللّهمّ اجعل أيّامنا كلّها أعياد، وأجعل أجمل أعيادنا يوم لقياك وأنت راضٍ عنّا",
+  "نسألك يا الله أن تُعيننا في يوم فطرك المُبارك على إقامة الصّلاة، وصلة الأرحام، وتآلف القلوب، والإكثار من الأذكار، يا من بذكره تطمئن القلوب",
+  "اللّهمّ بارك للأمّة الإسلاميّة بحلول عيد الفطر المُبارك، واجعله فاتحةً لكلّ خير وفرج وسعادة",
+  "اللّهمّ بارك لنا في أيّام عيد الفطر المُبارك، واجعله عيدًا لكلّ أحزاننا وهمومنا",
+  "إلهي يا معطي من تشاء ومانع من تشاء، إلهي فاعطنا اللطف والرحمة، وامنع عنا البطش والنقمة",
+  "اللّهمّ كما بلّغتنا شهر رمضان وليلة العيد المُباركة، أكرمنا ببلاغه أعواماً عديدة وأزمنة مديدة",
+  "أسألك يا الله أن لا يدخل أوّل يوم عيد الفطر المُبارك، إلّا وقد استجبت دعواتنا وغفرت ذلّاتنا",
+  "اللّهمّ إنّا كنّا لك من العابدين الشّاكرين القائمين فتقبّل منّا صيامنا وصالح أعمالنا، واجعل عيد فطرنا عيد سعادةٍ وفرح لنا",
+  "أسألك يا الله في ليلة العيد راحةً من كلّ هم، ومغفرةً من كلّ ذنب، وجبرًا لقلوبنا عن كلّ كسر",
+  "اللّهمّ لا تدع لنا ذنبًا إلّا غفرته، ولا همًّا إلّا قضيته، ولا حاجةً من حوائج الدّنيا إلّا وقضيتها لنا برحمتك يا أرحم الرّاحمين",
+  "اللّهمّ إنّي قد رفعت اكفّي إليك متضرّعًا، أن لا تدع لنا ذنبًا إلّا غفرته، ولا مريضًا إلّا شفيته، ولا مُبتلًا إلّا عافيته، ولا ميّتًا إلّا رحمته برحمتك يا أرحم الرّاحمين",
+  "اللّهمّ لك الحمد والشّكر على تمام الفضل والمنّة، نشكرك اللّهمّ على إكرامك لنا بالصّيام والقيام، ونسألك صلاح الحال والأفعال",
+  "اللّهمّ إنّك شرّعت العيد فرحةً وسرورًا، فتمّم يا رب فرحة وسرور علينا جميعًا",
+  "اللّهُمَّ في يوم عَيد الفطر هذَا أسألك بجودك وكرمك أن تتقبل منّا الصيام والقيام يا ربّ العالمين",
+  "اللهم تقبّل منا الشهر الكريم الذي صمناه لك خالصًا لوجهك الكريم واجعل العيد علينا سعيد",
+  "اللهم وقد أفطرنا بفطرك السعيد، فاكتبنا يا رب من عبادك الصالحين، وأدم علينا نعمتك وعافيتك",
+  "ربنا إنك عفو تحب العفو، فاعفُ عنا، واغفر لنا ذنوبنا، وأدخلنا برحمتك في عبادك الصالحين",
+  "اللهم إنا نسألك عيشة تقية وميتة سوية ومردا غير مخز ولا فاضح",
+  "اللهم اجعل قلوبنا نقية، وأيامنا سعيدة، وأبعد عنا كل ضيق وكدر، وأعطنا من السعادة ما يملأ أرواحنا نورًا",
+  "يا الله، اجعل هذا العيد بداية خير وفرح، وأبعد عن قلوبنا كل ما يُكدّرها",
+  "اللهم ارزقنا سعادة تغمر أرواحنا، وأزل عنّا كل هم، ولا تجعلنا نحمل ثقل الأيام",
+  "اللهم امنحنا راحةً لا تنتهي، وطمأنينةً تُبدد الخوف، وفرحةً تجعلنا نحيا بقلوب مطمئنة",
+  "اللهم اغفر لنا ذنوبنا، وارحمنا برحمتك الواسعة، واجعلنا من الذين رضيت عنهم يوم لقائك",
+  "يا الله، اجعل هذا العيد عيد مغفرة ورحمة، واغسل قلوبنا من الذنوب كما يُغسل الثوب الأبيض من الدنس",
+  "اللهم احفظ أهلي وأحبابي، وأدم علينا المحبة والتآلف، وارزقنا اجتماعًا دائمًا في طاعتك",
+  "يا رب، اجعل عائلتي وأصدقائي في سعادة دائمة، وأبعد عنهم كل مكروه",
+  "اللهم ارزق أحبتي صحةً وعافية، وأدم عليهم راحة البال، واجعل أيامهم مليئة بالخير",
+  "اللهم اجعل صباح عيد الفطر نورًا في وجوهنا، وسرورًا في قلوبنا، وبركة في أرزاقنا، وفرحًا لا ينقطع في حياتنا",
+  "اللهم اجعل هذا الصباح المبارك بداية لكل جميل، وشفاء لكل مريض، وفرجًا لكل مكروب، وسعادة لا تزول",
+  "اللهم في هذا الصباح العيد، تقبّل منا ما مضى من صيامنا وقيامنا، وأعنا على طاعتك في قادم الأيام، واجعلنا من المقبولين المرحومين",
+  "اللهم اجعل هذا العيد عيد رحمة ومغفرة، وعيد سعادة وأمن، وعيد توفيق وتيسير",
+  "اللهم لك الحمد أن بلغتنا رمضان، وأعنتنا فيه على الصيام والقيام، فاقبل منا عبادتنا ولا تردنا خائبين",
+  "اللهم كما رزقتنا صيام رمضان، فارزقنا القبول والمغفرة، واملأ قلوبنا شكرًا، وألسنتنا حمدًا",
+  "اللهم اجعلنا ممن ختموا رمضان برضاك، وبدأوا عيدهم بذكرك وشكرك، واكتب لنا أجر الصائمين القائمين",
+  "اللهم اجعل عيدنا هذا عيد فرح وسرور وتوفيق، واملأ قلوبنا بذكرك، وحياتنا ببركتك، وأيامنا بسعادتك",
+  "اللهم اجعل العيد لنا ولأهلنا مناسبة للفرج القريب، والرزق الواسع، والفرح الدائم",
+  "يا رب اجعل هذا العيد عيد بشرى وخير ورضا، اجعل فيه أيامنا أسعد، وأعمالنا أزكى، وأدعيتنا أقرب للاستجابة",
+  "اللهم اجعل لنا في يوم العيد نورًا يملأ دروبنا، وتوفيقًا يرافق خطواتنا، وسعادة تغمر قلوبنا",
+  "اللهم اجعل هذا العيد مفتاحًا لكل خير، وخاتمة لكل هم، وسببًا في تحقيق ما نتمنى",
+  "اللهم في صباح عيدك، ارحم من غابوا عن أعيادنا، وارزقهم فرحة لا تنقطع في جناتك",
+  "اللهم زين أيامنا بالتوبة والغفران وأكثر حسناتنا في الميزان، وأجزي عبادك المسلمين بجنّاتٍ ذات أفنان",
+  "كل عيد فطر وأنت لله طائع، ولأهلك نافع، ولدين الإسلام رافع، ولنبيّك محمّد صلّى الله عليه وسلّم تابع",
+  "أسأل الله أن يجعل عيدك نورًا، ونهارك سرورًا، وجعل لك في ختامه دعوةً لا ترد، وأكرمك برزقٍ لا يُعد",
+  "عسى تتحقق الأماني ونرجع نعايدكم سنين، ربي يجعلكم من العايدين الشاكرين الفايزين",
+  "اللّهمّ بارك لنا في أيّام عيد الفطر السّعيد، وارزقنا الصّلاح والتّوفيق لكلّ ما تحبّ وترضى",
+  "أسألك اللّهمّ أن تجعل عيد الفطر يوم خير وتيسير للأمور، وأن ترزق عبادك السّكينة والرّاحة من كلّ هم",
+  "أسأل الله الّذي طوى الشّهر الفضيل، وأعاد علينا العيد، أن يمدّكم بعمر مديد ويجعل أيامكم كلّها عيد في عيد",
+  "اللّهمّ إنّي أستودعك عائلتي التي هي أغلى ما أملك، واجعل عيد الفطر بداية فرح وسعادة لا تنتهي",
+  "اللّهمّ في يوم عيد الفطر المُبارك اجعل عائلتي ممن عفوت عنهم وقدّرت لهم الخير والسّعادة في الدّنيا والآخرة",
+  "اللّهمّ بمناسبة عيد الفطر أسألك أن تحفظ لي عائلتي وتبارك لي فيها، وأن تبعد عنهم الهمّ والحزن",
+  "أستودعك اللهمّ في يوم الفطر المبارك أولادي فلا تريني فيهم بأسًا يُبكيني",
+  "اللّهمّ إنّ أولادي هم حياتي التي لا أعيش من دونهم، فاكتب لهم الخير والسّعادة في حياتهم يا ربّ العالمين",
+  "اللّهمّ احفظ لي أولادي في يوم فطرك السّعيد فهم قطعة من روحي، اللّهمّ بارك لهم في أيّامهم، واجعل التّوفيق والنّجاح من حليفهم",
+  "اللّهمّ كما أسعدت الصّائمين بيوم الفطر، أسعد قلوب أصدقائي وأحبابي بما يحبّوا ويتمنّوا",
+  "أسألك اللّهم أن تجعل أصدقائي إلى رفقتي دائمًا، وأن تحفظهم لي وتبارك لي فيهم",
+  "اللّهمّ لك الحمد على أن بلغتنا شهر رمضان، اللّهمّ تقبّل منّا الصيام والقيام، وأكرمنا بحسن الختام",
+  "أسألك اللّهمّ في نهاية شهر رمضان أن تعتق رقابنا عن النّار، وتتقبّل صيامنا وقيامنا، وتغفر لنا ذنوبنا وآثامنا",
+  "اللّهمّ مع ختام شهر رمضان نسألك أن لا تجعل شهر رمضان آخر عهدنا به، وإن جعلته آخرها فاجعلنا من المرحومين لا من المحرومين",
+  "اللّهمّ كما أكرمتنا بيوم الفطر بعد الصّيام، أكرمنا بفرحة القلوب بعد سنين الحزن والآلام",
+  "أسألك اللّهم أن تجعل عيد الفطر المُبارك عيد نصرٍ وفتحٍ مبين لبلاد المسلمين",
+  "الحمد والشّكر لله الّذي بلّغنا شهر رمضان، ومن ثمّ بلّغنا عيد الفطر المُبارك، نسأل الله أن يجعلنا من الغانمين الفائزين العائدين",
+  "أشكر الله الّذي أكرمني بنعمة الإسلام، وأسأله بفضله العظيم أن يجعلني من عوّاد الشّهر الفضيل",
+  "اللّهمّ يا من تُعطي الخير لمن تشاء من عبادك، أن تجعل أوّل أيّام العيد فاتحة خيرٍ واستجابة لكلّ دعاء",
+  "أسألك يا الله في أوّل أيّام العيد المُباركة أن تجعل أحبّتي ممن تقبّلت أعمالهم، وغفرت لهم ذلّاتهم، وأعتق لهم رقابهم",
+  "اللّهم إنّا نسألك العفاف والغنى والتّقى والهدى وحسن عاقبة الآخرة والدّنيا، ونعوذ بك من الشّك والشّقاق والرّياء والسّمعة في دينك",
+  "اللّهمّ ارحم أمّي حبيبة قلبي ونور عيني، أسألك اللّهمّ أن تجعلها ممن عفوت عنهم وغفرت لهم وأسكنتهم فسيح جنّاتك",
+  "أسألك اللّهمّ في يوم الفطر أن ترحم من فارقونا وأصبحت أجسادهم تحت التّراب، اللّهمّ اغفر لهم وأجعل الجنّة نزلهم",
+  "اللّهمّ أدعوك بمناسبة عيد الفطر المُبارك أن تسعد قلب زوجي على قدر ما يُسعدني",
+  "اللّهمّ إنّي أسألك بأن تجعل زوجي ممن تقبّلت منه وغفرت له وأعتقت رقبته عن النّار",
+  "أدعوك يا الله بحقّ كلّ من قال لا إله إلا الله أن تجعل لنا مع دخول عيد الفطر السّعيد دخولًا لفرحةٍ دائمة لا تفارق قلوبنا أبدًا",
+  "يا كريم، اجعل قلوب من نحب مليئة بالسكينة، وارزقهم فرحًا لا ينقطع وسعادةً لا تزول",
+  "اللهم اجعلنا ممن تشملهم رحمتك في هذا اليوم المبارك، واكتب لنا نصيبًا من العفو والرضا",
+  "اللهم أذقنا في صباح هذا العيد حلاوة الرضا، وراحة البال، وطمأنينة القلب، واملأ حياتنا بالفرح والبركة والهداية"
+];
+
+const DUAS_EN = [
+  "O Allah, accept our fasting, prayers, and righteous deeds.",
+  "O Allah, make this Eid a joy and happiness for all Muslims.",
+  "O Allah, forgive us, have mercy on us, and free our necks from the Fire.",
+  "O Allah, grant us many more Eids while You are pleased with us.",
+  "O Allah, bring happiness and joy to the hearts of Muslims everywhere.",
+  "O Allah, accept our prayer and fasting, and bless us with Your Paradise.",
+  "O Allah, the Living, the Sustaining — accept our Eid and make it blessed.",
+  "We ask You, O Allah, to make our Eid an Eid of relief for Muslim lands and victory over the enemies of faith.",
+  "O Allah, accept what we have offered of good deeds, and make Eid al-Fitr a day of joy through answered prayers.",
+  "O Allah, make all our days like Eid, and make our finest Eid the day we meet You while You are pleased with us.",
+  "We ask You, O Allah, to help us on this blessed day of Fitr in establishing prayer, maintaining family ties, uniting hearts, and increasing remembrance of You.",
+  "O Allah, bless the Muslim Ummah with the arrival of Eid al-Fitr, and make it an opening for all good, relief, and happiness.",
+  "O Allah, bless us in the days of Eid al-Fitr, and make it an Eid for all our sorrows and worries.",
+  "My Lord, You give to whom You will and withhold from whom You will; grant us gentleness and mercy, and withhold from us severity and punishment.",
+  "O Allah, as You have allowed us to reach Ramadan and the blessed night of Eid, honor us with reaching it for many years to come.",
+  "We ask You, O Allah, that the first day of Eid not enter except with our prayers answered and our sins forgiven.",
+  "O Allah, we were among Your worshippers, grateful and standing in prayer; accept our fasting and good deeds, and make our Eid one of happiness and joy.",
+  "We ask You, O Allah, on the night of Eid: relief from every worry, forgiveness for every sin, and healing for every broken heart.",
+  "O Allah, leave no sin unforgiven, no worry unresolved, and no worldly need uncared for — by Your mercy, O Most Merciful.",
+  "O Allah, I have raised my hands to You in supplication: forgive our sins, heal our sick, relieve our afflicted, and have mercy on our deceased.",
+  "O Allah, praise and thanks to You for Your favor; we thank You for honoring us with fasting and prayer, and we ask You for righteousness in our state and deeds.",
+  "O Allah, You have ordained Eid as joy and delight; complete for us all joy and delight.",
+  "O Allah, on this day of Eid al-Fitr I ask You by Your generosity and bounty to accept our fasting and prayer, O Lord of the worlds.",
+  "O Allah, accept from us the blessed month we fasted sincerely for Your sake, and make Eid joyful for us.",
+  "O Allah, we have broken our fast with Your blessed Fitr; write us among Your righteous servants, and continue Your favor and wellness upon us.",
+  "Our Lord, You are Forgiving and love forgiveness; forgive us our sins and admit us by Your mercy among Your righteous servants.",
+  "O Allah, we ask You for a pious life, a good death, and a return that is neither shameful nor disgraceful.",
+  "O Allah, make our hearts pure, our days happy, remove from us all distress, and give us happiness that fills our souls with light.",
+  "O Allah, make this Eid a beginning of good and joy, and remove from our hearts all that saddens them.",
+  "O Allah, grant us happiness that fills our souls, remove every worry from us, and do not burden us with the weight of days.",
+  "O Allah, grant us endless rest, peace that dispels fear, and joy that lets us live with tranquil hearts.",
+  "O Allah, forgive our sins, have mercy on us with Your vast mercy, and make us among those You are pleased with on the day we meet You.",
+  "O Allah, make this Eid an Eid of forgiveness and mercy, and wash our hearts of sin as white cloth is washed of stain.",
+  "O Allah, preserve our families and loved ones, maintain love and harmony among us, and grant us lasting reunion in Your obedience.",
+  "O Lord, make my family and friends constantly happy, and keep all harm away from them.",
+  "O Allah, grant our loved ones health and wellness, and grant them lasting peace of mind and days full of good.",
+  "O Allah, make the morning of Eid al-Fitr light in our faces, joy in our hearts, blessing in our provision, and unceasing joy in our lives.",
+  "O Allah, make this blessed morning a beginning of all good, healing for every sick person, relief for every distressed one, and lasting happiness.",
+  "O Allah, on this morning of Eid, accept what has passed of our fasting and prayer, help us obey You in days to come, and make us among the accepted and forgiven.",
+  "O Allah, make this Eid an Eid of mercy and forgiveness, an Eid of happiness and security, an Eid of success and ease.",
+  "O Allah, praise to You for allowing us to reach Ramadan and helping us in fasting and prayer; accept our worship and do not turn us away empty-handed.",
+  "O Allah, as You granted us fasting in Ramadan, grant us acceptance and forgiveness; fill our hearts with gratitude and our tongues with praise.",
+  "O Allah, make us among those who ended Ramadan with Your pleasure and began Eid with Your remembrance and thanks; write for us the reward of the fasting and praying.",
+  "O Allah, make this Eid of ours an Eid of joy, delight, and success; fill our hearts with Your remembrance, our lives with Your blessing, and our days with Your happiness.",
+  "O Allah, make Eid for us and our families an occasion for near relief, abundant provision, and lasting joy.",
+  "O Lord, make this Eid an Eid of glad tidings, good, and contentment; make our days happier, our deeds purer, and our prayers closer to acceptance.",
+  "O Allah, grant us on the day of Eid light that fills our paths, success that accompanies our steps, and happiness that fills our hearts.",
+  "O Allah, make this Eid a key to all good, an end to every worry, and a means to achieve what we hope for.",
+  "O Allah, on the morning of Your Eid, have mercy on those who have left our Eids, and grant them unceasing joy in Your gardens.",
+  "O Allah, adorn our days with repentance and forgiveness, increase our good deeds in the balance, and reward Your Muslim servants with gardens of delight.",
+  "May every Eid find you obedient to Allah, beneficial to your family, uplifting to Islam, and following the way of the Prophet ﷺ.",
+  "I ask Allah to make your Eid light, your day joy, and to grant you at its end a prayer that is never rejected and provision that never ends.",
+  "May our wishes be fulfilled and we celebrate with you for years to come; may our Lord make you among the thankful, successful celebrants.",
+  "O Allah, bless us in the days of the blessed Eid, and grant us righteousness and success in all that You love and approve.",
+  "We ask You, O Allah, to make Eid al-Fitr a day of good and ease, and to grant Your servants tranquility and relief from every worry.",
+  "I ask Allah, who folded the blessed month and returned the Eid to us, to extend your life and make all your days like Eid.",
+  "O Allah, I entrust to You my family, the dearest of what I own; make Eid al-Fitr a beginning of joy and happiness that never ends.",
+  "O Allah, on the day of Eid al-Fitr, make my family among those You have forgiven and destined good and happiness for in this life and the next.",
+  "O Allah, on the occasion of Eid al-Fitr, I ask You to preserve my family and bless me in them, and to remove worry and sorrow from them.",
+  "O Allah, I entrust to You my children on the day of blessed Fitr; do not show me in them any harm that makes me weep.",
+  "O Allah, my children are my life without whom I cannot live; write for them good and happiness in their lives, O Lord of the worlds.",
+  "O Allah, preserve my children on the day of Your blessed Fitr, for they are part of my soul; bless them in their days and make success their companion.",
+  "O Allah, as You have gladdened the fasting with the day of Fitr, gladden the hearts of my friends and loved ones with what they love and hope for.",
+  "I ask You, O Allah, to make my friends always by my side, and to preserve them for me and bless me in them.",
+  "O Allah, praise to You for allowing us to reach Ramadan; accept our fasting and prayer, and honor us with a good end.",
+  "We ask You, O Allah, at the end of Ramadan to free our necks from the Fire, accept our fasting and prayer, and forgive our sins and wrongdoings.",
+  "O Allah, with the end of Ramadan we ask You not to make it our last Ramadan; and if it is, make us among the forgiven, not the deprived.",
+  "O Allah, as You honored us with the day of Fitr after fasting, honor us with joy of hearts after years of sorrow and pain.",
+  "We ask You, O Allah, to make Eid al-Fitr an Eid of clear victory and conquest for Muslim lands.",
+  "Praise and thanks to Allah who allowed us to reach Ramadan and then Eid al-Fitr; we ask Allah to make us among the successful and victorious.",
+  "I thank Allah who honored me with the blessing of Islam, and I ask Him by His great favor to make me among those who return to the blessed month.",
+  "O Allah, You who give good to whom You will among Your servants, make the first days of Eid an opening of good and acceptance of every prayer.",
+  "We ask You, O Allah, on the first blessed days of Eid to make our loved ones among those whose deeds You accepted, whose sins You forgave, and whose necks You freed.",
+  "O Allah, we ask You for chastity, sufficiency, piety, guidance, and a good outcome in this life and the next; we seek refuge in You from doubt, discord, hypocrisy, and showing off in Your religion.",
+  "O Allah, have mercy on my mother, the beloved of my heart and light of my eye; make her among those You forgave and admitted to Your spacious gardens.",
+  "We ask You, O Allah, on the day of Fitr to have mercy on those who left us and whose bodies lie under the earth; forgive them and make Paradise their abode.",
+  "I call upon You, O Allah, on the occasion of Eid al-Fitr to gladden my spouse's heart as much as they gladden mine.",
+  "O Allah, I ask You to make my spouse among those You accepted, forgave, and freed from the Fire.",
+  "I call upon You, O Allah, by the right of all who said 'There is no god but Allah,' to make our entry into the blessed Eid an entry into lasting joy that never leaves our hearts.",
+  "O Generous One, fill the hearts of those we love with tranquility, and grant them unceasing joy and lasting happiness.",
+  "O Allah, make us among those encompassed by Your mercy on this blessed day, and write for us a share of pardon and acceptance.",
+  "O Allah, let us taste on this morning of Eid the sweetness of contentment, peace of mind, tranquility of heart, and fill our lives with joy, blessing, and guidance."
+];
+
+const LABELS = {
+  ar: {
+    title:    "Eid Mubarak",
+    subtitle: "تقبل الله منا ومنكم صالح الأعمال",
+    subEn:    "May Allah accept from us and from you righteous deeds",
+    btnDua:   "اضغط لعرض الدعاء",
+    duaLabel: "دعاء العيد",
+    shareCopy:"نسخ رابط التهنئة",
+    shareWa:  "مشاركة عبر واتساب",
+    footer:   "✦ كل عام وأنتم بخير ✦",
+    toast:    "تم نسخ الرابط! 🎉"
+  },
+  en: {
+    title:    "Eid Mubarak",
+    subtitle: "May Allah Accept Our Good Deeds",
+    subEn:    "تقبل الله منا ومنكم صالح الأعمال",
+    btnDua:   "Show an Eid Du'a 🤲",
+    duaLabel: "Eid Du'a",
+    shareCopy:"Copy Greeting Link",
+    shareWa:  "Share on WhatsApp",
+    footer:   "✦ Wishing You a Blessed Eid ✦",
+    toast:    "Link copied! 🎉"
+  }
+};
+
+let currentLang = 'ar';
+let lastDuaIndex = -1;
+
+/* ============================================================
+   LANGUAGE TOGGLE
+============================================================ */
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+  const L = LABELS[lang];
+  document.getElementById('heroTitle').textContent    = L.title;
+  document.getElementById('heroSubtitle').textContent = L.subtitle;
+  document.getElementById('heroSubEn').textContent    = L.subEn;
+  document.getElementById('btnDuaText').textContent   = L.btnDua;
+  document.getElementById('duaLabel').textContent     = L.duaLabel;
+  document.getElementById('shareCopy').textContent    = L.shareCopy;
+  document.getElementById('shareWa').textContent      = L.shareWa;
+  document.getElementById('footerText').textContent   = L.footer;
+
+  document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+  document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+
+  // Re-render current dua in new lang if visible
+  const card = document.getElementById('duaCard');
+  if (card.classList.contains('visible')) {
+    const duas = lang === 'ar' ? DUAS_AR : DUAS_EN;
+    document.getElementById('duaText').textContent = duas[lastDuaIndex !== -1 ? lastDuaIndex : 0];
+  }
+}
+
+/* ============================================================
+   DUA DISPLAY
+============================================================ */
+function showDua() {
+  const duas = currentLang === 'ar' ? DUAS_AR : DUAS_EN;
+  let idx;
+  do { idx = Math.floor(Math.random() * duas.length); } while (idx === lastDuaIndex && duas.length > 1);
+  lastDuaIndex = idx;
+
+  const card = document.getElementById('duaCard');
+  const text = document.getElementById('duaText');
+
+  // Reset animation
+  card.classList.remove('visible');
+  card.style.transition = 'none';
+  void card.offsetWidth; // reflow
+  card.style.transition = '';
+
+  text.textContent = duas[idx];
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => card.classList.add('visible'));
+  });
+
+  burstSparkles();
+}
+
+/* ============================================================
+   SHARE FUNCTIONS
+============================================================ */
+function copyLink() {
+  const msg = currentLang === 'ar'
+    ? "🌙 عيد مبارك! تقبل الله منا ومنكم صالح الأعمال ✨"
+    : "🌙 Eid Mubarak! May Allah accept our righteous deeds ✨";
+
+  navigator.clipboard.writeText(msg + "\n" + window.location.href)
+    .then(() => showToast(LABELS[currentLang].toast))
+    .catch(() => showToast("Copied! 🎉"));
+}
+
+function shareWhatsApp() {
+  const msg = encodeURIComponent(
+    currentLang === 'ar'
+      ? "🌙 عيد مبارك وعيد سعيد! تقبل الله منا ومنكم صالح الأعمال 🤲✨"
+      : "🌙 Eid Mubarak! Wishing you joy and blessings this Eid 🤲✨"
+  );
+  window.open("https://wa.me/?text=" + msg, "_blank");
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ============================================================
+   STAR CANVAS BACKGROUND
+============================================================ */
+(function initStars() {
+  const canvas = document.getElementById('starCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, stars = [], nebulae = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Generate stars
+  for (let i = 0; i < 220; i++) {
+    stars.push({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.4 + .3,
+      twinkleSpeed: Math.random() * .03 + .005,
+      twinkleOffset: Math.random() * Math.PI * 2,
+      color: Math.random() > .85 ? '#F5D97A' : '#FFFFFF'
+    });
+  }
+
+  // Nebula blobs
+  const colors = ['rgba(46,23,96,', 'rgba(13,115,119,', 'rgba(11,15,46,'];
+  for (let i = 0; i < 6; i++) {
+    nebulae.push({
+      x: Math.random(), y: Math.random(),
+      r: Math.random() * 300 + 150,
+      color: colors[i % colors.length],
+      opacity: Math.random() * .18 + .05
+    });
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Gradient sky
+    const grad = ctx.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0, '#0B0F2E');
+    grad.addColorStop(.5, '#130B30');
+    grad.addColorStop(1, '#0A1428');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Nebulae
+    nebulae.forEach(n => {
+      const g = ctx.createRadialGradient(n.x*W, n.y*H, 0, n.x*W, n.y*H, n.r);
+      g.addColorStop(0, n.color + n.opacity + ')');
+      g.addColorStop(1, n.color + '0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    });
+
+    // Stars
+    t += .016;
+    stars.forEach(s => {
+      const alpha = .5 + .5 * Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset);
+      ctx.globalAlpha = .3 + alpha * .7;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ============================================================
+   SPARKLE / CONFETTI BURST
+============================================================ */
+const sparkleCanvas = document.getElementById('sparkleCanvas');
+const sCtx = sparkleCanvas.getContext('2d');
+let sparticles = [];
+
+function resizeSpark() {
+  sparkleCanvas.width  = window.innerWidth;
+  sparkleCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeSpark);
+resizeSpark();
+
+function burstSparkles(cx, cy) {
+  cx = cx || window.innerWidth / 2;
+  cy = cy || window.innerHeight * .45;
+  const GOLD = ['#F5D97A','#D4AF37','#FFF8E7','#C8860A','#FFFFFF','#FFD700'];
+  for (let i = 0; i < 80; i++) {
+    const angle  = Math.random() * Math.PI * 2;
+    const speed  = Math.random() * 6 + 2;
+    const size   = Math.random() * 6 + 2;
+    const type   = Math.random() > .4 ? 'star' : 'circle';
+    sparticles.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - Math.random() * 4,
+      size, alpha: 1,
+      color: GOLD[Math.floor(Math.random() * GOLD.length)],
+      decay: Math.random() * .018 + .012,
+      gravity: .12 + Math.random() * .08,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - .5) * .2,
+      type
+    });
+  }
+}
+
+function drawStar5(ctx, x, y, r, rot) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) {
+    const a1 = (i * 2 * Math.PI / 5) - Math.PI / 2;
+    const a2 = a1 + Math.PI / 5;
+    const ox = Math.cos(a1) * r, oy = Math.sin(a1) * r;
+    const ix = Math.cos(a2) * r * .45, iy = Math.sin(a2) * r * .45;
+    i === 0 ? ctx.moveTo(ox, oy) : ctx.lineTo(ox, oy);
+    ctx.lineTo(ix, iy);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateSparks() {
+  sCtx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+  sparticles = sparticles.filter(p => p.alpha > .01);
+  sparticles.forEach(p => {
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.vy += p.gravity;
+    p.alpha -= p.decay;
+    p.rot   += p.rotSpeed;
+    sCtx.globalAlpha = Math.max(0, p.alpha);
+    sCtx.fillStyle = p.color;
+    if (p.type === 'star') {
+      drawStar5(sCtx, p.x, p.y, p.size, p.rot);
+    } else {
+      sCtx.beginPath();
+      sCtx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+      sCtx.fill();
+    }
+  });
+  sCtx.globalAlpha = 1;
+  requestAnimationFrame(animateSparks);
+}
+animateSparks();
+
+/* Initial burst on page load */
+window.addEventListener('load', () => {
+  setTimeout(() => burstSparkles(window.innerWidth / 2, window.innerHeight * .35), 800);
+});
+</script>
+</body>
+</html>
